@@ -3,47 +3,54 @@
 class MyClass
 {
 private:
-	int data;
+	int *data;
+	int arr_size;
 public:
 
 
-	MyClass(int data)
+	MyClass(int size)
 	{
-		this->data = data;
+		this->data = new int [size];
+		this->arr_size = size;
+		for (int i(0); i < size; i++)
+		{
+			data[i] = i;
+			std::cout << data[i];
+
+		}
 		std::cout << "Сработал конструктор" << std::endl;
 	}
 
+	MyClass(const MyClass& new_object)
+	{
+		std::cout << "Сработал конструктор копирования" << std::endl;
+
+		this->arr_size = new_object.arr_size;
+		this->data = new int[new_object.arr_size];//выделили новое место в памяти под массив
+
+		for (int i(0); i < new_object.arr_size; i++)
+		{
+			this->data[i] = new_object.data[i];
+		}
+	}
 
 	~MyClass()
 	{
 		std::cout << "Сработал деструктор" << std::endl;
+		delete[] data;
 	}
 
 };
 
-void Foon1(MyClass);
-MyClass Foon2();
-
 int main(void)
 {
 	setlocale(LC_ALL, "rus");
-	MyClass object(5);
+	int a;
+	std::cin >> a;
+	MyClass object(a);
 	MyClass object2(object);
-	Foon1(object);
-	Foon2();
 
 	system("pause");
 	return 0;
 }
 
-void Foon1(MyClass val)
-{
-	std::cout << "Функция Foon1 " << std::endl;
-}
-
-MyClass Foon2()
-{
-	MyClass cop_object(3);
-	std::cout << "Функция Foon2 " << std::endl;
-	return cop_object;
-}
