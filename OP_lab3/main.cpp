@@ -1,21 +1,30 @@
 #include<iostream>
+#define _USE_MATH_DEFINES
+#include<math.h>
+
 
 class Figure
 {
 protected:
 
-	float* sideA;
-	float* sideB;
+	float sideA;
+	float sideB;
 
 public:
 
-	virtual float Perimetr(int size) = 0;
-	virtual void Area() = 0;
+	virtual float Perimetr() = 0;
+	virtual float Area() = 0;
 	
-	Figure(int size)
+	Figure(float sideA, float sideB)
 	{
-		this->sideA = new float[size];
-		this->sideB = new float[size];
+		this->sideA = sideA;
+		this->sideB = sideB;
+	}
+
+	void Output()
+	{
+		std::cout << "Периметр: " << Perimetr()<<std::endl;
+		std::cout << "Площадь: " << Area() << std::endl;
 	}
 	
 };
@@ -23,76 +32,84 @@ public:
 class Rectangle : public Figure
 {
 public:
-	Rectangle(int size, float* sideA) :Figure(size)
+	Rectangle(float sideA, float sideB) :Figure( sideA, sideB)
 	{
-		this->sideA = new float[size];
-
-		for (int i(0); i < size; i++)
-		{
-			std::cin >> sideA[i];
-			this->sideA[i] = sideA[i];
-			std::cin >> sideB[i];
-			this->sideB[i] = sideB[i];
-			std::cout << "\n" << this->sideA[i]<<"\n";
-			std::cout << "\n" << this->sideB[i] << "\n";
-		}
-
+		this->sideA = sideA;
+		this->sideB = sideB;
+		Perimetr();
+		Area();
 	}
 	
-	float Perimetr(int size) override
+	float Perimetr() override
 	{
-		float perimetr[2];
-		for (int i = 0; i < size; i++)
-		{
-			perimetr[i] = (sideA[i] + sideB[i]) * 2;
-			return perimetr[i];
-		}
+		return (sideA + sideB) * 2;
 	}
 
-	void Area() override
+	float Area() override
 	{
-
+		return (sideA * sideB);
 	}
 
 };
 
-//class Parallelogram : public Figure
-//{
-//public:
-//	Parallelogram(int size, float* sideA) :Figure(size)
-//	{
-//		
-//	}
-//	virtual void Perimetr() override
-//	{
-//
-//	}
-//	virtual void Area() override
-//	{
-//
-//	}
-//
-//};
+class Parallelogram : public Figure
+{
+private:
+	float angle;
+public:
+	
+	float Perimetr() override
+	{
+		return sideA + sideB + sideA + sideB;
+	}
+
+	float Area() override
+	{
+		float h = sideA * sin((angle * M_PI) / 180);
+		return sideB* h;
+
+	}
+
+	Parallelogram(float sideA, float sideB, float angle) :Figure(sideA, sideB)
+	{
+		this->angle = angle;
+		Perimetr();
+		Area();
+	}
+
+};
 
 
 int main(void)
 {
 	
 	setlocale(LC_ALL, "rus");
+	const int N = 3, M = 2;
 
-	int N = 2, M = 3;
-	float* sideA;
-	sideA = new float[N];
-	
-	Rectangle object(N, sideA);
-
-	for (int i = 0; i < N; i++)
+	Rectangle* object1 = new Rectangle[N]
 	{
-		std::cout << object.Perimetr(N);
+		{2,3},
+		{4,3},
+		{2,5}
+	};
+
+	Parallelogram* object2 = new Parallelogram[M]
+	{
+		{4,8,30},
+		{3,2,45}
+	};
+
+	for (int i(0); i < N; i++)
+	{
+		object1[i].Output();
+	}
+
+	for (int i(0); i < M; i++)
+	{
+		object2[i].Output();
 	}
 
 	system("pause");
 	return 0;
 }
-
 
