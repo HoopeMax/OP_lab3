@@ -1,80 +1,78 @@
 #include<iostream>
 
-class MyClass
+class Figure
 {
 private:
-	int *data;
-	int arr_size;
+	int x;
+	int y;
+
 public:
-	MyClass(int size)
+	Figure()
 	{
-		this->data = new int [size];
-		this->arr_size = size;
-		for (int i(0); i < size; i++)
-		{
-			data[i] = i;
-			std::cout << data[i];
-
-		}
-		std::cout << "Сработал конструктор" << this << std::endl;
+		x = 0;
+		y = 0;
+		std::cout << this << "конструктор" << std::endl;
 	}
 
-	MyClass(const MyClass& new_object)
+	Figure(int valX, int valY)
 	{
-		std::cout << "Сработал конструктор копирования" << this << std::endl;
-
-		this->arr_size = new_object.arr_size;
-		this->data = new int[new_object.arr_size];//выделили новое место в памяти под массив
-
-		for (int i(0); i < new_object.arr_size; i++)
-		{
-			this->data[i] = new_object.data[i];
-		}
+		x = valX;
+		y = valY;
+		std::cout << this << "конструктор" << std::endl;
 	}
 
-	MyClass & operator = (const MyClass &new_object)
+	void Print()
 	{
-		
-		this->arr_size = new_object.arr_size;
-
-		std::cout << "Сработал оператор присваевания" << this << std::endl;
-
-		if (this->data != nullptr)
-		{
-			delete[] this->data;
-		}	
-
-		this->data = new int[new_object.arr_size];
-
-		for (int i(0); i < new_object.arr_size; i++)
-		{
-			this->data[i] = new_object.data[i];
-		}
-		return *this;
+		std::cout << x << std::endl;
+		std::cout << y << std::endl;
 	}
 
-	~MyClass()
+	void SetY(int y)
 	{
-		std::cout << "Сработал деструктор" << std::endl;
-		delete[] data;
+		this->y = y;
+	}
+
+	int GetY()
+	{
+		return y;
+	}
+
+	void SetX(int x)
+	{
+		this->x = x;
+	}
+
+	int GetX()
+	{
+		return x;
+	}
+
+	bool operator == (const Figure& newObject)//сам оператор перегрузки ==
+	{
+		return (this->x == newObject.x && this->y == newObject.y);
+	}
+
+	bool operator != (const Figure& newObject)// оператор перегрузки !=
+	{
+		return !(this->x == newObject.x && this->y == newObject.y);
 	}
 };
 
+
 int main(void)
 {
+
 	setlocale(LC_ALL, "rus");
 
-	int a = 10; 
-	int b = 2; 
-	int c = 5;
+	Figure point(3, 5);
+	Figure point2(2, 5);
 
-	MyClass object(a);
-	MyClass object2(object);//тут использовается конструктор копирования 
-	MyClass object3(c);
+	bool result1 = point == point2;//возвращает false
+	bool result2 = point != point2;//возвращает true(сравниваем точки из конструктора)
 
-	object = object2 = object3;//присваеваем объекты, делаем перегрузку оператора присваевания (поверхностоное копирование)
 
 	system("pause");
 	return 0;
 }
+
 
