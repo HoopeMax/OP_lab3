@@ -6,8 +6,8 @@ class Figure
 {
 protected:
 
-	float sideA;
-	float sideB;
+	float X;
+	float Y;
 
 	//чисто вирутальные функции
 	virtual float Perimetr() = 0;
@@ -15,17 +15,21 @@ protected:
 	virtual void Output() = 0;
 public:
 	
-	Figure(float sideA, float sideB)
+	Figure(float X, float Y)
 	{
-		this->sideA = sideA;
-		this->sideB = sideB;
+		this->X = X;
+		this->Y = Y;
 	}	
 };
 
 class Rectangle : public Figure
 {
+private:
+	float sideA;
+	float sideB;
+
 public:
-	Rectangle(float sideA, float sideB) :Figure( sideA, sideB)//наследование конструктора
+	Rectangle(float X, float Y, float sideA, float sideB) :Figure( X, Y)
 	{
 		this->sideA = sideA;
 		this->sideB = sideB;
@@ -54,6 +58,8 @@ class Parallelogram : public Figure
 {
 private:
 	float angle;
+	float sideA;
+	float sideB;
 public:
 	
 	float Perimetr() override//переопределение методов 
@@ -71,8 +77,10 @@ public:
 		return sideB* Height();
 	}
 
-	Parallelogram(float sideA, float sideB, float angle) :Figure(sideA, sideB)//наследование конструктора
+	Parallelogram(float X, float Y, float sideA, float sideB, float angle) :Figure(X, Y)
 	{
+		this->sideA = sideA;
+		this->sideB = sideB;
 		this->angle = angle;
 		Perimetr();
 		Area();
@@ -105,9 +113,9 @@ void Output_Paral(Parallelogram* object2, unsigned short size);
 float Find_Paral(unsigned short size, Parallelogram* object2);
 
 int main(void)
-{	
+{
 	setlocale(LC_ALL, "rus");
-
+	
 	const unsigned short N = 4, M = 3;
 
 	float* rec_sideA = new  float[N];
@@ -125,22 +133,22 @@ int main(void)
 
 	Rectangle* object1 = new Rectangle[N]
 	{
-		{rec_sideA[0], rec_sideB[0]},
-		{rec_sideA[1], rec_sideB[1]},
-		{rec_sideA[2], rec_sideB[2]},
-		{rec_sideA[3], rec_sideB[3]},
-	
+		{0, 0, rec_sideA[0], rec_sideB[0]},
+		{0, 0,rec_sideA[1], rec_sideB[1]},
+		{0, 0,rec_sideA[2], rec_sideB[2]},
+		{0, 0,rec_sideA[3], rec_sideB[3]},
+
 		/*{2,5},
 		{4,3},
 		{2,5}*/
 	};
 
 	Parallelogram* object2 = new Parallelogram[M]
-	{	
-		{paral_sideA[0], paral_sideB[0], angle[0]},
-		{paral_sideA[1], paral_sideB[1], angle[1]},
-		{paral_sideA[2], paral_sideB[2], angle[2]},
-		 
+	{
+		{0, 0,paral_sideA[0], paral_sideB[0], angle[0]},
+		{0, 0,paral_sideA[1], paral_sideB[1], angle[1]},
+		{0, 0,paral_sideA[2], paral_sideB[2], angle[2]},
+
 		/*{4,8,30},
 		{3,2,45}*/
 	};
@@ -153,8 +161,10 @@ int main(void)
 
 	std::cout << std::endl << "Минимальная площадь прямоугольника = " << Find_Rect_Min(N, object1) << std::endl;
 	std::cout << std::endl << "Максимальная площадь прямоугольника = " << Find_Rect_Max(N, object1) << std::endl;
-	
+
 	std::cout << std::endl << "Минимальная высота пaраллелограмма = " << Find_Paral(M, object2) << std::endl << std::endl;
+
+	delete[] object1, object2, rec_sideA, rec_sideB, paral_sideA, paral_sideB, angle;
 
 	system("pause");
 	return 0;
