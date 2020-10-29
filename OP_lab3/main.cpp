@@ -138,9 +138,6 @@ int main(void)
 		{0, 0,rec_sideA[2], rec_sideB[2]},
 		{0, 0,rec_sideA[3], rec_sideB[3]},
 
-		/*{2,5},
-		{4,3},
-		{2,5}*/
 	};
 
 	Parallelogram* object2 = new Parallelogram[M]
@@ -149,8 +146,6 @@ int main(void)
 		{0, 0,paral_sideA[1], paral_sideB[1], angle[1]},
 		{0, 0,paral_sideA[2], paral_sideB[2], angle[2]},
 
-		/*{4,8,30},
-		{3,2,45}*/
 	};
 
 	std::cout << std::endl << "Прямоугольники:" << std::endl << std::endl;
